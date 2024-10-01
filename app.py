@@ -36,18 +36,20 @@ try:
     from password import PASSWORD
     try:
         password = PASSWORD
+        file_path = "/Users/priom/Desktop/Psychodermatology"
+        model = f"{file_path}/model_01_30-09-2024_00-26-21.keras"
     except:
         pass
 except:
+    model = "model_01_30-09-2024_00-26-21.keras"
     password = st.secrets["PASSWORD"]
 
 
-file_path = "/Users/priom/Desktop/Psychodermatology"
 
 def load_df():
     return pd.read_excel(f"{file_path}/PsyDerm_new_final.xlsx")
 
-def initialize_model(model_path=f"{file_path}/model_01_30-09-2024_00-26-21.keras"):
+def initialize_model(model_path=model):
     print(f"Attempting to load model from: {model_path}")
     try:
         loaded_model = load_model(model_path)
