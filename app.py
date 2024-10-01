@@ -25,6 +25,7 @@ from tensorflow.keras.optimizers import Adam # type: ignore
 import streamlit as st
 import streamlit_option_menu
 from streamlit_option_menu import option_menu
+import os
 
 from random_data import prediction_from_user_data
 from priom_encryption import decrypt
@@ -41,7 +42,7 @@ try:
     except:
         pass
 except:
-    model = "model_01_30-09-2024_00-26-21.keras"
+    model = "./model_01_30-09-2024_00-26-21.keras"
     password = st.secrets["PASSWORD"]
 
 
@@ -115,4 +116,100 @@ if selected == "Stats":
     with c4:
         chart_data = pd.DataFrame(np.random.randn(20, 3),columns=['a', 'b', 'c'])
         st.line_chart(chart_data)
+
+
+
+def load_tickets():
+    if os.path.exists('tickets.csv'):
+        return pd.read_csv('tickets.csv')
+    else:
+        # If the file doesn't exist, create a new DataFrame
+        return pd.DataFrame(columns=['Ticket ID', 'Name', 'Email', 'Problem', 'Status'])
+
+# Helper function to save tickets to a CSV file
+def save_tickets(tickets_df):
+    tickets_df.to_csv('tickets.csv', index=False)
+
+def contact_page():
+    st.header("Ticket System (Contact Us)")
+    
+    # Load existing tickets
+    tickets_df = load_tickets()
+
+    # Ticket Submission Form
+    with st.form(key='ticket_form'):
+        name = st.text_input("Name")
+        email = st.text_input("Email")
+        problem = st.text_area("Problem Description")
+
+        # Create a submit button for the form
+        submit_button = st.form_submit_button(label="Submit Ticket")
+
+        # When the submit button is pressed
+        if submit_button:
+            if not name or not email or not problem:
+                st.error("Please fill out all fields.")
+            else:
+                # Generate a new Ticket ID
+                ticket_id = len(tickets_df) + 1
+                new_ticket = {'Ticket ID': ticket_id, 'Name': name, 'Email': email, 'Problem': problem, 'Status': 'Open'}
+                
+                # Append the new ticket to the DataFrame using pd.concat
+                tickets_df = pd.concat([tickets_df, pd.DataFrame([new_ticket])], ignore_index=True)
+                save_tickets(tickets_df)
+                
+                st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID: {ticket_id}")
+
+    # Display the tickets in a table
+    st.subheader("All Tickets")
+    
+    # Display headers
+    header = ["Ticket ID", "Name", "Email", "Problem", "Status", "Action"]
+    st.write(pd.DataFrame(columns=header))  # Display the headers as an empty table
+    
+    # Allow the user to change the status of a ticket
+    for index, row in tickets_df.iterrows():
+        col1, col2, col3, col4, col5, col6 = st.columns([1, 2, 2, 5, 2, 1])
+        
+        col1.write(row['Ticket ID'])
+        col2.write(row['Name'])
+        col3.write(row['Email'])
+        col4.write(row['Problem'])
+        
+        # Dropdown to change the status
+        new_status = col5.selectbox("Status", options=['Open', 'In Progress', 'Resolved'], 
+                                      index=['Open', 'In Progress', 'Resolved'].index(row['Status']), 
+                                      key=f"status_{row['Ticket ID']}")
+        
+        # Input for PIN
+        pin = col6.text_input("PIN", type="password", key=f"pin_{row['Ticket ID']}")
+
+        # If the status was changed and PIN is correct
+        if new_status != row['Status'] and pin == '1234':
+            tickets_df.at[index, 'Status'] = new_status
+            save_tickets(tickets_df)
+            st.success(f"Ticket ID {row['Ticket ID']} status updated to {new_status}.")
+        elif new_status != row['Status'] and pin != '1234':
+            st.error("Incorrect PIN. Please try again.")
+
+    # Response Table
+    st.subheader("Ticket Responses")
+    response_header = ["Ticket ID", "Response"]
+    responses_df = pd.DataFrame(columns=response_header)
+
+    for index, row in tickets_df.iterrows():
+        response = st.text_area(f"Response for Ticket ID {row['Ticket ID']}", key=f"response_{row['Ticket ID']}")
+        
+        if response:
+            responses_df = pd.concat([responses_df, pd.DataFrame([[row['Ticket ID'], response]])], ignore_index=True)
+            st.success(f"Response recorded for Ticket ID {row['Ticket ID']}.")
+
+    st.write(responses_df)
+
+
+
+if selected == "Contact Us":
+    contact_page()
+
+
 
