@@ -131,7 +131,12 @@ def prediction_from_user_data(df, model, keys, random=False):
         del st.session_state["random_row"]
         del st.session_state["index"]
         
-        st.rerun()
+        try:
+            st.rerun()
+        except Exception as e:
+            st.experimental_rerun()
+        
+        # st.rerun()
 
 
 
