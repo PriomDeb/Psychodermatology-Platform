@@ -50,16 +50,18 @@ except:
 def load_df():
     return pd.read_excel(f"{file_path}/PsyDerm_new_final.xlsx")
 
-def initialize_model(model_path=model):
-    print(f"Attempting to load model from: {model_path}")
+def initialize_model(model_path="model_01_30-09-2024_00-26-21.keras"):
+    absolute_model_path = os.path.abspath(model_path)
+    print(f"Attempting to load model from: {absolute_model_path}")
     print(os.listdir(os.getcwd()))
     try:
-        loaded_model = load_model(model_path)
+        loaded_model = load_model(absolute_model_path)
         print(f"Model Summary: \n{loaded_model.summary()}\n")
         return loaded_model
     except Exception as e:
         print(e)
         print("Error while loading the model.")
+
 
 
 # initialize_model()
@@ -121,11 +123,15 @@ if selected == "Stats":
 
 
 def load_tickets():
-    if os.path.exists('tickets.csv'):
-        return pd.read_csv('tickets.csv')
-    else:
-        # If the file doesn't exist, create a new DataFrame
-        return pd.DataFrame(columns=['Ticket ID', 'Name', 'Email', 'Problem', 'Status'])
+    try:
+        tickets_df = pd.read_csv('tickets.csv')
+    except FileNotFoundError:
+        # Create a new DataFrame with necessary columns if the file does not exist
+        tickets_df = pd.DataFrame(columns=['Ticket ID', 'Name', 'Email', 'Problem', 'Status', 'Response'])
+    # Ensure 'Response' column exists
+    if 'Response' not in tickets_df.columns:
+        tickets_df['Response'] = ''
+    return tickets_df
 
 # Helper function to save tickets to a CSV file
 def save_tickets(tickets_df):
@@ -153,9 +159,16 @@ def contact_page():
             else:
                 # Generate a new Ticket ID
                 ticket_id = len(tickets_df) + 1
-                new_ticket = {'Ticket ID': ticket_id, 'Name': name, 'Email': email, 'Problem': problem, 'Status': 'Open'}
+                new_ticket = {
+                    'Ticket ID': ticket_id, 
+                    'Name': name, 
+                    'Email': email, 
+                    'Problem': problem, 
+                    'Status': 'Open',
+                    'Response': ''
+                }
                 
-                # Append the new ticket to the DataFrame using pd.concat
+                # Append the new ticket to the DataFrame
                 tickets_df = pd.concat([tickets_df, pd.DataFrame([new_ticket])], ignore_index=True)
                 save_tickets(tickets_df)
                 
@@ -164,13 +177,13 @@ def contact_page():
     # Display the tickets in a table
     st.subheader("All Tickets")
     
-    # Display headers
-    header = ["Ticket ID", "Name", "Email", "Problem", "Status", "Action"]
-    st.write(pd.DataFrame(columns=header))  # Display the headers as an empty table
-    
-    # Allow the user to change the status of a ticket
+    # Define table columns
+    columns = ["Ticket ID", "Name", "Email", "Problem", "Status", "Response", "Action"]
+    ticket_rows = []
+
+    # Allow the user to change the status of a ticket and enter a response
     for index, row in tickets_df.iterrows():
-        col1, col2, col3, col4, col5, col6 = st.columns([1, 2, 2, 5, 2, 1])
+        col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 2, 2, 5, 2, 3, 1])
         
         col1.write(row['Ticket ID'])
         col2.write(row['Name'])
@@ -182,30 +195,37 @@ def contact_page():
                                       index=['Open', 'In Progress', 'Resolved'].index(row['Status']), 
                                       key=f"status_{row['Ticket ID']}")
         
-        # Input for PIN
-        pin = col6.text_input("PIN", type="password", key=f"pin_{row['Ticket ID']}")
-
-        # If the status was changed and PIN is correct
-        if new_status != row['Status'] and pin == '1234':
-            tickets_df.at[index, 'Status'] = new_status
-            save_tickets(tickets_df)
-            st.success(f"Ticket ID {row['Ticket ID']} status updated to {new_status}.")
-        elif new_status != row['Status'] and pin != '1234':
-            st.error("Incorrect PIN. Please try again.")
-
-    # Response Table
-    st.subheader("Ticket Responses")
-    response_header = ["Ticket ID", "Response"]
-    responses_df = pd.DataFrame(columns=response_header)
-
-    for index, row in tickets_df.iterrows():
-        response = st.text_area(f"Response for Ticket ID {row['Ticket ID']}", key=f"response_{row['Ticket ID']}")
+        # Input for response
+        response = col6.text_area(f"Response for Ticket ID {row['Ticket ID']}", 
+                                   value=row.get('Response', ''),  # Use .get to avoid KeyError
+                                   key=f"response_{row['Ticket ID']}")
         
-        if response:
-            responses_df = pd.concat([responses_df, pd.DataFrame([[row['Ticket ID'], response]])], ignore_index=True)
-            st.success(f"Response recorded for Ticket ID {row['Ticket ID']}.")
+        # Input for PIN
+        pin = col7.text_input("PIN", type="password", key=f"pin_{row['Ticket ID']}")
 
-    st.write(responses_df)
+        # Create action button
+        if col7.button("Update", key=f"update_{row['Ticket ID']}"):
+            if pin == '1234':
+                # Update status if changed
+                if new_status != row['Status']:
+                    tickets_df.at[index, 'Status'] = new_status
+                
+                # Update response if changed
+                if response != row.get('Response', ''):  # Use .get to avoid KeyError
+                    tickets_df.at[index, 'Response'] = response
+                
+                save_tickets(tickets_df)
+                st.success(f"Ticket ID {row['Ticket ID']} updated successfully.")
+            else:
+                st.error("Incorrect PIN. Please try again.")
+
+        # Append row data for display
+        ticket_rows.append(row)
+
+    # Convert updated DataFrame back to DataFrame and display
+    updated_tickets_df = pd.DataFrame(ticket_rows)
+    st.dataframe(updated_tickets_df[['Ticket ID', 'Name', 'Email', 'Problem', 'Status', 'Response']], use_container_width=True)
+
 
 
 
