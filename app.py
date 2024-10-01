@@ -52,7 +52,7 @@ def load_df():
 
 def initialize_model(model_path=model):
     print(f"Attempting to load model from: {model_path}")
-    print(os.getcwd())
+    print(os.listdir(os.getcwd()))
     try:
         loaded_model = load_model(model_path)
         print(f"Model Summary: \n{loaded_model.summary()}\n")
