@@ -42,7 +42,7 @@ try:
     except:
         pass
 except:
-    model = "model_01_30-09-2024_00-26-21.keras"
+    model = "model.keras"
     password = st.secrets["PASSWORD"]
 
 
