@@ -31,6 +31,14 @@ from random_data import prediction_from_user_data
 from priom_encryption import decrypt
 # from password import PASSWORD
 
+from dotenv import load_dotenv
+import os
+
+# Load .env file
+load_dotenv()
+
+# Access environment variables
+
 
 
 try:
@@ -42,8 +50,13 @@ try:
     except:
         pass
 except:
-    model = "model.keras"
-    password = st.secrets["PASSWORD"]
+    try:
+        model = "model.keras"
+        password = st.secrets["PASSWORD"]
+    except:
+        model = "model.keras"
+        password = os.getenv('PASSWORD')
+        
 
 
 
