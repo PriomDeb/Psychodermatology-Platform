@@ -48,11 +48,13 @@ def load_df():
     return pd.read_excel(f"{file_path}/PsyDerm_new_final.xlsx")
 
 def initialize_model(model_path=f"{file_path}/model_01_30-09-2024_00-26-21.keras"):
+    print(f"Attempting to load model from: {model_path}")
     try:
         loaded_model = load_model(model_path)
         print(f"Model Summary: \n{loaded_model.summary()}\n")
         return loaded_model
-    except:
+    except Exception as e:
+        print(e)
         print("Error while loading the model.")
 
 
@@ -82,7 +84,8 @@ if selected == "Home":
     
 
 if selected == "Stats":
-    st.header('Snowflake Healthcare App')
+    st.header('Stats')
+    df = decrypt(password=password, object="encrypted_df.joblib")
     # Create a row layout
     c1, c2= st.columns(2)
     c3, c4= st.columns(2)
