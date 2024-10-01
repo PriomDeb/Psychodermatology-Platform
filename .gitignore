@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+test.py
+password.py
+
 # Distribution / packaging
 .Python
 build/
