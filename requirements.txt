@@ -5,3 +5,4 @@ seaborn
 matplotlib
 scikit-learn
 joblib
+streamlit==1.20.0
