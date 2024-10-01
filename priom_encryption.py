@@ -83,5 +83,5 @@ if __name__ == "__main__":
     from password import PASSWORD
     
     # encrypt(password=PASSWORD, object=df, name=name)
-    print(decrypt(password=PASSWORD, object="encrypted_df.joblib"))
+    # print(decrypt(password=PASSWORD, object="encrypted_df.joblib"))
     
