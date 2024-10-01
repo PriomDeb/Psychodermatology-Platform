@@ -28,7 +28,18 @@ from streamlit_option_menu import option_menu
 
 from random_data import prediction_from_user_data
 from priom_encryption import decrypt
-from password import PASSWORD
+# from password import PASSWORD
+
+
+
+try:
+    from password import PASSWORD
+    try:
+        password = PASSWORD
+    except:
+        pass
+except:
+    password = st.secrets["PASSWORD"]
 
 
 file_path = "/Users/priom/Desktop/Psychodermatology"
@@ -60,7 +71,7 @@ if selected == "Home":
     tab1, tab2 = st.tabs(["Custom Data", "Get Random Data from Dataset"])
     model = initialize_model()
     # df = load_df()
-    df = decrypt(password=PASSWORD, object="encrypted_df.joblib")
+    df = decrypt(password=password, object="encrypted_df.joblib")
     
     with tab1:
      prediction_from_user_data(df=df, model=model, keys="tab1")
