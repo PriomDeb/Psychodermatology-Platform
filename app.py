@@ -149,74 +149,12 @@ def contact_page():
             if not name or not email or not problem:
                 st.error("Please fill out all fields.")
             else:
-                # Generate a new Ticket ID
-                ticket_id = len(tickets_df) + 1
-                new_ticket = {
-                    'Ticket ID': ticket_id, 
-                    'Name': name, 
-                    'Email': email, 
-                    'Problem': problem, 
-                    'Status': 'Open',
-                    'Response': ''
-                }
-                
-                # Append the new ticket to the DataFrame
-                tickets_df = pd.concat([tickets_df, pd.DataFrame([new_ticket])], ignore_index=True)
-                save_tickets(tickets_df)
-                
-                st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID: {ticket_id}")
+                st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID:")
 
     # Display the tickets in a table
     st.subheader("All Tickets")
     
-    # Define table columns
-    columns = ["Ticket ID", "Name", "Email", "Problem", "Status", "Response", "Action"]
-    ticket_rows = []
-
-    # Allow the user to change the status of a ticket and enter a response
-    for index, row in tickets_df.iterrows():
-        col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 2, 2, 5, 2, 3, 1])
-        
-        col1.write(row['Ticket ID'])
-        col2.write(row['Name'])
-        col3.write(row['Email'])
-        col4.write(row['Problem'])
-        
-        # Dropdown to change the status
-        new_status = col5.selectbox("Status", options=['Open', 'In Progress', 'Resolved'], 
-                                      index=['Open', 'In Progress', 'Resolved'].index(row['Status']), 
-                                      key=f"status_{row['Ticket ID']}")
-        
-        # Input for response
-        response = col6.text_area(f"Response for Ticket ID {row['Ticket ID']}", 
-                                   value=row.get('Response', ''),  # Use .get to avoid KeyError
-                                   key=f"response_{row['Ticket ID']}")
-        
-        # Input for PIN
-        pin = col7.text_input("PIN", type="password", key=f"pin_{row['Ticket ID']}")
-
-        # Create action button
-        if col7.button("Update", key=f"update_{row['Ticket ID']}"):
-            if pin == '1234':
-                # Update status if changed
-                if new_status != row['Status']:
-                    tickets_df.at[index, 'Status'] = new_status
-                
-                # Update response if changed
-                if response != row.get('Response', ''):  # Use .get to avoid KeyError
-                    tickets_df.at[index, 'Response'] = response
-                
-                save_tickets(tickets_df)
-                st.success(f"Ticket ID {row['Ticket ID']} updated successfully.")
-            else:
-                st.error("Incorrect PIN. Please try again.")
-
-        # Append row data for display
-        ticket_rows.append(row)
-
-    # Convert updated DataFrame back to DataFrame and display
-    updated_tickets_df = pd.DataFrame(ticket_rows)
-    st.dataframe(updated_tickets_df[['Ticket ID', 'Name', 'Email', 'Problem', 'Status', 'Response']], use_container_width=True)
+    
 
 
 
