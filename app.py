@@ -46,15 +46,15 @@ try:
     try:
         password = PASSWORD
         file_path = "/Users/priom/Desktop/Psychodermatology"
-        model = f"{file_path}/model_01_30-09-2024_00-26-21.keras"
+        model_name = f"{file_path}/model_01_30-09-2024_00-26-21.keras"
     except:
         pass
 except:
     try:
-        model = "model.keras"
+        model_name = "model.keras"
         password = st.secrets["PASSWORD"]
     except:
-        model = "model.keras"
+        model_name = "model.keras"
         password = os.getenv('PASSWORD')
         
 
@@ -63,7 +63,7 @@ except:
 def load_df():
     return pd.read_excel(f"{file_path}/PsyDerm_new_final.xlsx")
 
-def initialize_model(model_path=model):
+def initialize_model(model_path=model_name):
     absolute_model_path = os.path.abspath(model_path)
     print(f"Attempting to load model from: {absolute_model_path}")
     print(os.listdir(os.getcwd()))
@@ -91,15 +91,15 @@ with st.sidebar:
     
 if selected == "Home":
     tab1, tab2 = st.tabs(["Custom Data", "Get Random Data from Dataset"])
-    model = initialize_model()
+    model_1 = initialize_model()
     # df = load_df()
     df = decrypt(password=password, object="encrypted_df.joblib")
     
     with tab1:
-     prediction_from_user_data(df=df, model=model, keys="tab1")
+     prediction_from_user_data(df=df, model=model_1, keys="tab1")
     
     with tab2:
-     prediction_from_user_data(df=df, model=model, keys="tab2", random=True)
+     prediction_from_user_data(df=df, model=model_1, keys="tab2", random=True)
 
     
 
