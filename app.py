@@ -63,7 +63,7 @@ except:
 def load_df():
     return pd.read_excel(f"{file_path}/PsyDerm_new_final.xlsx")
 
-def initialize_model(model_path=model_name):
+def initialize_model(model_path="model.h5"):
     absolute_model_path = os.path.abspath(model_path)
     print(f"Attempting to load model from: {absolute_model_path}")
     print(os.listdir(os.getcwd()))
