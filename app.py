@@ -54,7 +54,7 @@ def initialize_model(model_path="model_01_30-09-2024_00-26-21.keras"):
     absolute_model_path = os.path.abspath(model_path)
     print(f"Attempting to load model from: {absolute_model_path}")
     print(os.listdir(os.getcwd()))
-    print(tf.version)
+    print(tf.__version__)
     try:
         loaded_model = load_model(absolute_model_path)
         print(f"Model Summary: \n{loaded_model.summary()}\n")
