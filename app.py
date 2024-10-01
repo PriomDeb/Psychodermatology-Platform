@@ -30,6 +30,7 @@ import os
 from random_data import prediction_from_user_data
 from priom_encryption import decrypt
 # from password import PASSWORD
+from dataset_stats import basic_dataset_stats
 
 from dotenv import load_dotenv
 import os
@@ -104,11 +105,67 @@ if selected == "Home":
     
 
 if selected == "Stats":
-    st.header('Stats')
-    df = decrypt(password=password, object="encrypted_df.joblib")
-    # Create a row layout
     c1, c2= st.columns(2)
-    c3, c4= st.columns(2)
+    
+    with c1:
+        basic_dataset_stats()
+    
+    with c2:
+        basic_dataset_stats()
+    
+    # st.header('Stats')
+    # features = ['sex', 'r_lfa', 'pns', 'imped_lat', 
+    #             'bacq_withdrawal_coping_sum', 'bas_drive_sum', 'bas_entertainment_sum', 
+    #             'hq_logical_orientation_right', 'hq_type_of_consciousness_right', 
+    #             'hq_fear_level_and_sensitivity_left', 'hq_fear_level_and_sensitivity_right', 
+    #             'hq_pair_bonding_and_spouse_dominance_style_left', 
+    #             'hq_pair_bonding_and_spouse_dominance_style_right', 'wapi_verbal_left', 
+    #             'rsq_anxious_attachment']
+    # df = decrypt(password=password, object="encrypted_df.joblib")
+    # df.columns = df.columns.str.lower()
+    # # Create a row layout
+    # c1, c2= st.columns(2)
+    # c3, c4= st.columns(2)
+    
+    # with c1:
+    #     st.subheader('Class Distribution')
+    #     fig, ax = plt.subplots()
+    #     sns.countplot(x='group', data=df, palette='Set2', ax=ax)
+    #     ax.set_title('Class Distribution')
+    #     ax.set_xlabel('Group (0: Healthy, 1: AD, 2: Psoriasis)')
+    #     ax.set_ylabel('Count')
+    #     st.pyplot(fig)
+    
+    # # with c2:
+    # #     st.subheader('Correlation Heatmap')
+    # #     corr = df.corr()
+    # #     fig, ax = plt.subplots(figsize=(10, 8))
+    # #     sns.heatmap(corr, annot=True, fmt='.2f', cmap='coolwarm', ax=ax)
+    # #     ax.set_title('Feature Correlation Matrix')
+    # #     st.pyplot(fig)
+    
+    
+    # # with c3:
+    # #     model_1 = initialize_model()
+    # #     importances = model_1.feature_importances_ 
+        
+    # #     st.subheader('Feature Importances')
+    # #     fig, ax = plt.subplots()
+    # #     sns.barplot(x=importances, y=features, palette='Blues_d', ax=ax)
+    # #     ax.set_title('Top Features by Importance')
+    # #     ax.set_xlabel('Importance Score')
+    # #     st.pyplot(fig)
+    
+    
+    # with c4:
+    #     st.subheader('Boxplot of Key Features by Group')
+    #     feature_to_plot = 'r_lfa'  # Choose a feature dynamically if required
+    #     fig, ax = plt.subplots()
+    #     sns.boxplot(x='group', y=feature_to_plot, data=df, palette='Set3', ax=ax)
+    #     ax.set_title(f'Boxplot of {feature_to_plot} by Group')
+    #     ax.set_xlabel('Group (0: Healthy, 1: AD, 2: Psoriasis)')
+    #     ax.set_ylabel(feature_to_plot)
+    #     st.pyplot(fig)
 
     
 
