@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 from priom_encryption import decrypt
 
@@ -160,28 +161,40 @@ def basic_dataset_stats():
 
 
 def training_visuals():
-    st.header("🧠 Model Training Visuals", help=f"""This section provides an overview of the model's training process and performance metrics.\nHere, you can visualize accuracy, loss, and classification results for your trained model.""")
+    st.header("🧠 AI Model Visuals", help=f"""This section provides an overview of the model's training process and performance metrics.""")
     
     
     loss_acc_tab, confusion_matrix_tab, report_tab = st.tabs(["📉 Loss/Accuracy Curves", "🔢 Confusion Matrix", "📋 Classification Report"])
     
     
     with loss_acc_tab:
-        st.subheader("Training & Validation Curves")
+        st.write("""  """)
         
         st.image("model_01_30-09-2024_00-26-21_History_Plot.png", caption="Training and Validation Accuracy/Loss Curves", use_column_width=True)
     
     
     with confusion_matrix_tab:
-        st.subheader("Confusion Matrix")
-        # Call your function to plot the confusion matrix
-        # plot_confusion_matrix(y_true, y_pred, labels=["Healthy", "AD", "Psoriasis"])
-        st.write("Placeholder for confusion matrix.")
+        st.write("""  """)
+        
+        st.image("training_accuracy_report.png", caption="Confusion Matrix on Training Data", use_column_width=True)
+        
+        st.write("""  """)
+        
+        st.image("validation_report.png", caption="Confusion Matrix on Training Data on Validation Data", use_column_width=True)
     
     
     with report_tab:
-        st.subheader("Classification Report")
-        # Here you can display precision, recall, and F1-score
-        st.write("Placeholder for classification report (precision, recall, F1).")
+        st.write("""  """)
+        
+        st.write("Classification Report on Training Data")
+        st.dataframe(pd.read_csv("training_accuracy_report.csv"))
+        
+        st.write("""  """)
+        
+        st.write("Classification Report on Validation Data")
+        st.dataframe(pd.read_csv("validation_report.csv"))
+        
+        
+        
 
 
