@@ -115,28 +115,41 @@ def prediction_from_user_data(df, model, keys, random=False):
         hq_fear_level_and_sensitivity_right, hq_pair_bonding_and_spouse_dominance_style_left,
         hq_pair_bonding_and_spouse_dominance_style_right, wapi_verbal_left, rsq_anxious_attachment
     ]).reshape(1, -1)
+    
+    
+    c1, c2 = st.columns([1, 6])
 
     
+    with c1:
+        if st.button('Run Prediction', key=f"{keys}_random_data_button"):
+            predictions = model.predict(custom_data)
+            predicted_class = np.argmax(predictions, axis=1)
+            if predicted_class == 0:
+                class_name = "Healthy Control"
+            elif predicted_class == 1:
+                class_name = "Atopic Dermatitis"
+            else:
+                class_name = "Psoriasis"
+            st.markdown(f"""
+                        - Predicted Class: **`{predicted_class[0]}`** 
+                        - Predicted Class Name: **`{class_name}`** 
+                        - Confidence Level: **`{max(predictions[0]) * 100:.2f}%`**
+                        """)
     
-    if st.button('Run Prediction', key=f"{keys}_random_data_button"):
-        predictions = model.predict(custom_data)
-        predicted_class = np.argmax(predictions, axis=1)
-        st.write(f"Predicted Class: {predicted_class[0]}")
-        
-    
-    if st.button("Refresh", key=f"{keys}_refresh"):
-        for col in selected_features:
-            del st.session_state[col]
-        
-        del st.session_state["random_row"]
-        del st.session_state["index"]
-        
-        try:
-            st.rerun()
-        except Exception as e:
-            st.experimental_rerun()
-        
-        # st.rerun()
+    with c2:
+        if st.button("Refresh", key=f"{keys}_refresh"):
+            for col in selected_features:
+                del st.session_state[col]
+            
+            del st.session_state["random_row"]
+            del st.session_state["index"]
+            
+            try:
+                st.rerun()
+            except Exception as e:
+                st.experimental_rerun()
+            
+            # st.rerun()
 
 
 

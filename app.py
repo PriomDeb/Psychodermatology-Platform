@@ -40,7 +40,7 @@ load_dotenv()
 
 # Access environment variables
 
-
+st.set_page_config(page_title="Psychodermatology Platform", layout="wide")
 
 try:
     from password import PASSWORD
@@ -91,6 +91,12 @@ with st.sidebar:
 )
     
 if selected == "Home":
+    st.header("""🧠 Try this AI Model to Predict Psychodermatology Group of a Person""")
+    st.markdown("""
+                - 0: Healthy Control 
+                - 1: Atopic Dermatitis
+                - 2: Psoriasis
+                """)
     tab1, tab2 = st.tabs(["Custom Data", "Get Random Data from Dataset"])
     model_1 = initialize_model()
     # df = load_df()
@@ -127,7 +133,8 @@ def contact_page():
         problem = st.text_area("Problem Description")
 
         # Create a submit button for the form
-        submit_button = st.form_submit_button(label="Submit Ticket")
+        submit_button = st.form_submit_button(label="Submit Ticket", disabled=True)
+        st.warning("Ticket system for support not available right now. Use contact details to report anything or share feedback.\nThank you for trying this platform.")
 
         # When the submit button is pressed
         if submit_button:
@@ -135,6 +142,12 @@ def contact_page():
                 st.error("Please fill out all fields.")
             else:
                 st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID:")
+        
+        
+        st.subheader("Contact Details")
+        st.write("**Priom Deb**")
+        st.write("**Email:** priom@priomdeb.com")
+        st.write("**Web:** https://priomdeb.com")
 
     
     
