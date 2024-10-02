@@ -109,88 +109,13 @@ if selected == "Stats":
     
     with c1:
         basic_dataset_stats()
-    
-    # with c2:
-    #     basic_dataset_stats()
-    
-    # st.header('Stats')
-    # features = ['sex', 'r_lfa', 'pns', 'imped_lat', 
-    #             'bacq_withdrawal_coping_sum', 'bas_drive_sum', 'bas_entertainment_sum', 
-    #             'hq_logical_orientation_right', 'hq_type_of_consciousness_right', 
-    #             'hq_fear_level_and_sensitivity_left', 'hq_fear_level_and_sensitivity_right', 
-    #             'hq_pair_bonding_and_spouse_dominance_style_left', 
-    #             'hq_pair_bonding_and_spouse_dominance_style_right', 'wapi_verbal_left', 
-    #             'rsq_anxious_attachment']
-    # df = decrypt(password=password, object="encrypted_df.joblib")
-    # df.columns = df.columns.str.lower()
-    # # Create a row layout
-    # c1, c2= st.columns(2)
-    # c3, c4= st.columns(2)
-    
-    # with c1:
-    #     st.subheader('Class Distribution')
-    #     fig, ax = plt.subplots()
-    #     sns.countplot(x='group', data=df, palette='Set2', ax=ax)
-    #     ax.set_title('Class Distribution')
-    #     ax.set_xlabel('Group (0: Healthy, 1: AD, 2: Psoriasis)')
-    #     ax.set_ylabel('Count')
-    #     st.pyplot(fig)
-    
-    # # with c2:
-    # #     st.subheader('Correlation Heatmap')
-    # #     corr = df.corr()
-    # #     fig, ax = plt.subplots(figsize=(10, 8))
-    # #     sns.heatmap(corr, annot=True, fmt='.2f', cmap='coolwarm', ax=ax)
-    # #     ax.set_title('Feature Correlation Matrix')
-    # #     st.pyplot(fig)
-    
-    
-    # # with c3:
-    # #     model_1 = initialize_model()
-    # #     importances = model_1.feature_importances_ 
-        
-    # #     st.subheader('Feature Importances')
-    # #     fig, ax = plt.subplots()
-    # #     sns.barplot(x=importances, y=features, palette='Blues_d', ax=ax)
-    # #     ax.set_title('Top Features by Importance')
-    # #     ax.set_xlabel('Importance Score')
-    # #     st.pyplot(fig)
-    
-    
-    # with c4:
-    #     st.subheader('Boxplot of Key Features by Group')
-    #     feature_to_plot = 'r_lfa'  # Choose a feature dynamically if required
-    #     fig, ax = plt.subplots()
-    #     sns.boxplot(x='group', y=feature_to_plot, data=df, palette='Set3', ax=ax)
-    #     ax.set_title(f'Boxplot of {feature_to_plot} by Group')
-    #     ax.set_xlabel('Group (0: Healthy, 1: AD, 2: Psoriasis)')
-    #     ax.set_ylabel(feature_to_plot)
-    #     st.pyplot(fig)
 
     
 
 
-
-def load_tickets():
-    try:
-        tickets_df = pd.read_csv('tickets.csv')
-    except FileNotFoundError:
-        # Create a new DataFrame with necessary columns if the file does not exist
-        tickets_df = pd.DataFrame(columns=['Ticket ID', 'Name', 'Email', 'Problem', 'Status', 'Response'])
-    # Ensure 'Response' column exists
-    if 'Response' not in tickets_df.columns:
-        tickets_df['Response'] = ''
-    return tickets_df
-
-# Helper function to save tickets to a CSV file
-def save_tickets(tickets_df):
-    tickets_df.to_csv('tickets.csv', index=False)
 
 def contact_page():
     st.header("Ticket System (Contact Us)")
-    
-    # Load existing tickets
-    tickets_df = load_tickets()
 
     # Ticket Submission Form
     with st.form(key='ticket_form'):
@@ -208,8 +133,7 @@ def contact_page():
             else:
                 st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID:")
 
-    # Display the tickets in a table
-    st.subheader("All Tickets")
+    
     
     
 
