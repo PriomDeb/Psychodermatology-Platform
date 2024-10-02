@@ -149,6 +149,7 @@ def basic_dataset_stats():
         # Show first few rows of the dataset
         st.write("Sample Data:")
         n = st.selectbox("Select the number of rows to display:", [i for i in range(1, 11)], index=4)
+        st.info("Dataset is encrypted using PBKDF2 Method. Users can only see first 10 data.")
         st.write(df.head(n))
 
         st.write("Missing Values:")
@@ -156,4 +157,32 @@ def basic_dataset_stats():
         missing_values_df = missing_values[missing_values > 0].reset_index()
         missing_values_df.columns = ['Columns', 'Missing Values']
         st.dataframe(missing_values_df, use_container_width=True)
+
+
+def training_visuals():
+    st.header("🧠 Model Training Visuals", help=f"""This section provides an overview of the model's training process and performance metrics.\nHere, you can visualize accuracy, loss, and classification results for your trained model.""")
+    
+    
+    loss_acc_tab, confusion_matrix_tab, report_tab = st.tabs(["📉 Loss/Accuracy Curves", "🔢 Confusion Matrix", "📋 Classification Report"])
+    
+    
+    with loss_acc_tab:
+        st.subheader("Training & Validation Curves")
+        # Call your function to plot training and validation curves
+        # plot_training_curves(history)
+        st.write("Placeholder for training and validation accuracy/loss curves.")
+    
+    
+    with confusion_matrix_tab:
+        st.subheader("Confusion Matrix")
+        # Call your function to plot the confusion matrix
+        # plot_confusion_matrix(y_true, y_pred, labels=["Healthy", "AD", "Psoriasis"])
+        st.write("Placeholder for confusion matrix.")
+    
+    
+    with report_tab:
+        st.subheader("Classification Report")
+        # Here you can display precision, recall, and F1-score
+        st.write("Placeholder for classification report (precision, recall, F1).")
+
 

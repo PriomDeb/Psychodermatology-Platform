@@ -30,7 +30,7 @@ import os
 from random_data import prediction_from_user_data
 from priom_encryption import decrypt
 # from password import PASSWORD
-from dataset_stats import basic_dataset_stats
+from dataset_stats import basic_dataset_stats, training_visuals
 
 from dotenv import load_dotenv
 import os
@@ -109,6 +109,9 @@ if selected == "Stats":
     
     with c1:
         basic_dataset_stats()
+    
+    with c2:
+        training_visuals()
 
     
 
