@@ -110,8 +110,8 @@ if selected == "Stats":
     with c1:
         basic_dataset_stats()
     
-    with c2:
-        basic_dataset_stats()
+    # with c2:
+    #     basic_dataset_stats()
     
     # st.header('Stats')
     # features = ['sex', 'r_lfa', 'pns', 'imped_lat', 
