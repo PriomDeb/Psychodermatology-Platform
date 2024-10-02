@@ -168,9 +168,8 @@ def training_visuals():
     
     with loss_acc_tab:
         st.subheader("Training & Validation Curves")
-        # Call your function to plot training and validation curves
-        # plot_training_curves(history)
-        st.write("Placeholder for training and validation accuracy/loss curves.")
+        
+        st.image("model_01_30-09-2024_00-26-21_History_Plot.png", caption="Training and Validation Accuracy/Loss Curves", use_column_width=True)
     
     
     with confusion_matrix_tab:
