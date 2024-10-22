@@ -83,10 +83,10 @@ def initialize_model(model_path="model.h5"):
 
 with st.sidebar:
     selected = option_menu(
-    menu_title = "Main Menu",
-    options = ["Home","Stats", "Contact Us"],
-    icons = ["house","gear","envelope"],
-    menu_icon = "cast",
+    menu_title = "Psychodermatology AI",
+    options = ["Home","Visual Analysis", "Inspired From", "Contact"],
+    icons = ["house","gear", "star", "envelope"],
+    menu_icon = "robot",
     default_index = 0,
 )
     
@@ -110,7 +110,7 @@ if selected == "Home":
 
     
 
-if selected == "Stats":
+if selected == "Visual Analysis":
     c1, c2= st.columns(2)
     
     with c1:
@@ -119,35 +119,73 @@ if selected == "Stats":
     with c2:
         training_visuals()
 
+if selected == "Inspired From":
+    st.header("Assessment of Frontal Hemispherical Lateralization in Plaque Psoriasis and Atopic Dermatitis", help="Read the original paper from where I got the motivation to build this Machine Learning application. It is a great work!")
+    
+    st.markdown("""
+    **Citation:** Bozsányi, S.; Czurkó, N.; Becske, M.; Kasek, R.; Lázár, B.K.; Boostani, M.; Meznerics, F.A.; Farkas, K.; Varga, N.N.; Gulyás, L.; et al. 
+    Assessment of Frontal Hemispherical Lateralization in Plaque Psoriasis and Atopic Dermatitis. *J. Clin. Med.* 2023, 12, 4194. 
+    
+    [Read the full paper](https://doi.org/10.3390/jcm12134194)
+    
+    Published: June 21, 2023.
+    """)
+
+    st.subheader("Abstract")
+    st.markdown("""
+    **Background:** Each brain hemisphere plays a specialized role in cognitive and behavioral processes, known as hemispheric lateralization. 
+    In chronic skin diseases, such as plaque psoriasis (Pso) and atopic dermatitis (AD), the degree of lateralization between the frontal hemispheres 
+    may provide insight into specific connections between skin diseases and the psyche.
+
+    **Methods:** The study included 46 patients with Pso, 56 patients with AD, and 29 healthy control (Ctrl) subjects. The participants underwent frontal electroencephalogram (EEG) measurement, heart rate variability (HRV) assessment, and psychological tests. Statistical analyses were performed using ANOVA, with Bonferroni correction applied for multiple comparisons.
+
+    **Results:** This study shows significant right-lateralized prefrontal activity in both AD patients (p < 0.001) and Pso patients (p = 0.045) compared with Ctrl, with no significant difference between the AD and Pso groups (p = 0.633). AD patients with right-hemispheric dominant prefrontal activation exhibited increased inhibition and avoidance markers, while Pso patients showed elevated sympathetic nervous system activity.
+
+    **Conclusion:** Psychophysiological and psychometric data suggest a shared prevalence of right-hemispheric dominance in both AD and Pso patient groups. However, the findings indicate distinct psychodermatological mechanisms in AD and Pso.
+    """)
+
+    st.subheader("Acknowledgment and Note")
+    st.warning("""
+    I am not the author of the paper. However, with the help of the authors, I took the data from this original work and trained a machine learning model to classify different groups based on the provided psychophysiological and psychometric data. This platform showcases the potential machine learning application and analysis based on the data from the authors' work.
+
+    I would like to especially thank the first author, Szabolcs Bozsányi, and the rest of the research team for sharing the data, which made this platform possible.
+    """)
+
+
     
 
 
 
 def contact_page():
-    st.header("Ticket System (Contact Us)")
+    st.header("Contact")
+    
+    st.subheader("Contact Details", help="Contact developer of this platform.")
+    st.write("**Priom Deb**")
+    st.write("**Email:** priom@priomdeb.com")
+    st.write("**Web:** https://priomdeb.com")
+    
+    st.markdown("""
+                #### Contact Authors of the Paper 
+                [Original Paper](https://doi.org/10.3390/jcm12134194)
+                """)
 
     # Ticket Submission Form
-    with st.form(key='ticket_form'):
-        name = st.text_input("Name")
-        email = st.text_input("Email")
-        problem = st.text_area("Problem Description")
+    # with st.form(key='ticket_form'):
+    #     name = st.text_input("Name")
+    #     email = st.text_input("Email")
+    #     problem = st.text_area("Problem Description")
 
-        # Create a submit button for the form
-        submit_button = st.form_submit_button(label="Submit Ticket", disabled=True)
-        st.warning("Ticket system for support not available right now. Use contact details to report anything or share feedback.\nThank you for trying this platform.")
+    #     # Create a submit button for the form
+    #     submit_button = st.form_submit_button(label="Submit Ticket", disabled=True)
+    #     st.warning("Ticket system for support not available right now. Use contact details to report anything or share feedback.\nThank you for trying this platform.")
 
-        # When the submit button is pressed
-        if submit_button:
-            if not name or not email or not problem:
-                st.error("Please fill out all fields.")
-            else:
-                st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID:")
+    #     # When the submit button is pressed
+    #     if submit_button:
+    #         if not name or not email or not problem:
+    #             st.error("Please fill out all fields.")
+    #         else:
+    #             st.success(f"Thank you {name}! Your ticket has been submitted. Ticket ID:")
         
-        
-        st.subheader("Contact Details")
-        st.write("**Priom Deb**")
-        st.write("**Email:** priom@priomdeb.com")
-        st.write("**Web:** https://priomdeb.com")
 
     
     
@@ -156,7 +194,7 @@ def contact_page():
 
 
 
-if selected == "Contact Us":
+if selected == "Contact":
     contact_page()
 
 
