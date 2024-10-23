@@ -181,17 +181,17 @@ def prediction_from_user_data(df, model, keys, random=False):
                             <strong>Confidence Level:</strong><br> <code style='font-weight: bold;'>{confidence_level}%</code>
                             </div>""", unsafe_allow_html=True)
             
-        with col3:
-            st.markdown(f"""<div style="padding: 10px; border: 1px solid #d1d1d1; border-radius: 5px;">
+        if random: 
+            with col3: st.markdown(f"""<div style="padding: 10px; border: 1px solid #d1d1d1; border-radius: 5px;">
                             <strong>Original Psychodermatological Risk:</strong><br> <code style='font-weight: bold;'>{original_class}: {original_class_name}</code>
                             </div>""", unsafe_allow_html=True)
         
-        st.markdown(f"""<div style="padding: 10px; margin-top:10px; border: 1px solid #d1d1d1; border-radius: 5px; background-color: {bg_color}; color: {text_color};">
+        if random: st.markdown(f"""<div style="padding: 10px; margin-top:10px; border: 1px solid #d1d1d1; border-radius: 5px; background-color: {bg_color}; color: {text_color};">
                     <strong>{message}</strong><br> <div style=''>The original Psychodermatological Risk was <strong>{original_class}: {original_class_name}</strong> {add} the model predicted 
                     <strong>{model_predicted_class}: {model_predicted_class_name}</strong>.</div>
                     </div>""", unsafe_allow_html=True)
         
-        st.warning("""
+        if random: st.warning("""
                    This "Get Random Data from Dataset" is basically a tab for AI model to check its accuracy classifying the groups. In this tab, a random patient’s real data will be fetched from the dataset that we have. Then, if you run the prediction, you can see the AI model is correct or not.
                    """)
 
