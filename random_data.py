@@ -184,7 +184,7 @@ def prediction_from_user_data(df, model, keys, random=False):
 
         with col2:
             st.markdown(f"""<div style="padding: 10px; border: 1px solid #d1d1d1; border-radius: 5px;">
-                            <strong>Confidence Level:</strong><br> <code style='font-weight: bold;'>{confidence_level}%</code>
+                            <strong>AI Confidence Level:</strong><br> <code style='font-weight: bold;'>{confidence_level}%</code>
                             </div>""", unsafe_allow_html=True)
             
         if random: 
