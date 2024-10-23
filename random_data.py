@@ -19,7 +19,9 @@ def prediction_from_user_data(df, model, keys, random=False):
     if "index" not in st.session_state:
         st.session_state["index"] = {random_row.index[0]}
     if random:
-        st.write(f"Index: {list(st.session_state['index'])[0] + 2}")
+        c1, c2 = st.columns(2)
+        with c1: st.warning(f"Serial: {list(st.session_state['index'])[0] + 2}")
+        with c2: st.warning(f"Anonymous patient data of serial {list(st.session_state['index'])[0] + 2} from the dataset.")
     
     print(random_row[selected_features + ['group']])
     
@@ -86,7 +88,11 @@ def prediction_from_user_data(df, model, keys, random=False):
     
     
     with col1:
-        sex = st.number_input('Sex (1 or 2)', key=f"{keys}_input_1", min_value=1.0, max_value=2.0, value=sex_value, step=1.0)
+        # sex = st.number_input('Sex (1 or 2)', key=f"{keys}_input_1", min_value=1.0, max_value=2.0, value=sex_value, step=1.0)
+        sex = st.radio('Sex', options=['Male', 'Female'], key=f"{keys}_input_1", index=int(sex_value - 1))
+        if not random: sex_value = 1 if sex == 'Male' else 2
+        # st.write(f"Selected sex value: {sex_value}")
+        
         imped_lat = st.number_input('Impedance Latency', key=f"{keys}_input_2", min_value=-5.0, value=imped_lat_value, format="%.10f")
         bas_entertainment_sum = st.number_input('BAS Entertainment Sum', key=f"{keys}_input_3", min_value=-50.0, max_value=50.0,   value=bas_entertainment_sum_value)
         hq_fear_level_and_sensitivity_left = st.number_input('HQ Fear Level Left', key=f"{keys}_input_4", min_value=-10.0, max_value=10.0,     value=hq_fear_level_and_sensitivity_left_value)
@@ -109,7 +115,7 @@ def prediction_from_user_data(df, model, keys, random=False):
     
     
     custom_data = np.array([
-        sex, r_lfa, pns, imped_lat, bacq_withdrawal_coping_sum,
+        sex_value, r_lfa, pns, imped_lat, bacq_withdrawal_coping_sum,
         bas_drive_sum, bas_entertainment_sum, hq_logical_orientation_right,
         hq_type_of_consciousness_right, hq_fear_level_and_sensitivity_left,
         hq_fear_level_and_sensitivity_right, hq_pair_bonding_and_spouse_dominance_style_left,
@@ -118,6 +124,8 @@ def prediction_from_user_data(df, model, keys, random=False):
     
     
     c1, c2 = st.columns([1, 6])
+    
+    class_name = None
 
     
     with c1:
@@ -130,11 +138,63 @@ def prediction_from_user_data(df, model, keys, random=False):
                 class_name = "Atopic Dermatitis"
             else:
                 class_name = "Psoriasis"
-            st.markdown(f"""
-                        - Predicted Class: **`{predicted_class[0]}`** 
-                        - Predicted Class Name: **`{class_name}`** 
-                        - Confidence Level: **`{max(predictions[0]) * 100:.2f}%`**
-                        """)
+                
+    # if class_name: st.markdown(f"""- Predicted Class: **`{predicted_class[0]}`**
+    #                            - Predicted Class Name: **`{class_name}`**
+    #                            - Original Class Name: **`{random_row.group.to_list()[0]}`**
+    #                            - Confidence Level: **`{max(predictions[0]) * 100:.2f}%`**
+    #                            """)
+    if class_name:
+        groups = {0: "Healthy Control", 1: "Atopic Dermatitis", 2: "Psoriasis"}
+        model_predicted_class = predicted_class[0]
+        model_predicted_class_name = class_name
+        original_class = int(random_row.group.to_list()[0])
+        original_class_name = groups[original_class]
+        confidence_level = f"{max(predictions[0]) * 100:.2f}"
+        
+        matched = False
+        
+        if model_predicted_class == original_class:
+            matched = True
+            
+        text_color = "white"
+        
+        if matched:
+            bg_color = "#80d47c"
+            add = "and also"
+            message = "Bingo!"
+            text_color = "#3e4a3c"
+        else:
+            bg_color = "red"
+            add = "but"
+            message = "Wrong Classification!"
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.markdown(f"""<div style="padding: 10px; border: 1px solid #d1d1d1; border-radius: 5px;">
+                            <strong>Predicted Psychodermatological Risk:</strong> <br> <code style='font-weight: bold;'>{model_predicted_class}: {model_predicted_class_name}</code>
+                            </div>""", unsafe_allow_html=True)
+
+        with col2:
+            st.markdown(f"""<div style="padding: 10px; border: 1px solid #d1d1d1; border-radius: 5px;">
+                            <strong>Confidence Level:</strong><br> <code style='font-weight: bold;'>{confidence_level}%</code>
+                            </div>""", unsafe_allow_html=True)
+            
+        with col3:
+            st.markdown(f"""<div style="padding: 10px; border: 1px solid #d1d1d1; border-radius: 5px;">
+                            <strong>Original Psychodermatological Risk:</strong><br> <code style='font-weight: bold;'>{original_class}: {original_class_name}</code>
+                            </div>""", unsafe_allow_html=True)
+        
+        st.markdown(f"""<div style="padding: 10px; margin-top:10px; border: 1px solid #d1d1d1; border-radius: 5px; background-color: {bg_color}; color: {text_color};">
+                    <strong>{message}</strong><br> <div style=''>The original Psychodermatological Risk was <strong>{original_class}: {original_class_name}</strong> {add} the model predicted 
+                    <strong>{model_predicted_class}: {model_predicted_class_name}</strong>.</div>
+                    </div>""", unsafe_allow_html=True)
+        
+        st.warning("""
+                   This "Get Random Data from Dataset" is basically a tab for AI model to check its accuracy classifying the groups. In this tab, a random patient’s real data will be fetched from the dataset that we have. Then, if you run the prediction, you can see the AI model is correct or not.
+                   """)
+
     
     with c2:
         if st.button("Refresh", key=f"{keys}_refresh"):

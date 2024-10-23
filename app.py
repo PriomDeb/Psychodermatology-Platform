@@ -40,7 +40,7 @@ load_dotenv()
 
 # Access environment variables
 
-st.set_page_config(page_title="Psychodermatology Platform", layout="wide")
+st.set_page_config(page_title="Predict Psychodermatological Risk", layout="wide")
 
 try:
     from password import PASSWORD
@@ -91,7 +91,7 @@ with st.sidebar:
 )
     
 if selected == "Home":
-    st.header("""🧠 Try this AI Model to Predict Psychodermatology Group of a Person""")
+    st.header("""🧠 Try this AI Model to Predict Psychodermatological Risk of Psoriasis or Atopic Dermatitis""")
     st.markdown("""
                 - 0: Healthy Control 
                 - 1: Atopic Dermatitis
@@ -131,7 +131,7 @@ if selected == "Inspired From":
     Published: June 21, 2023.
     """)
 
-    st.subheader("Abstract")
+    st.subheader("Abstract", help=f"Abstract of original [paper](https://doi.org/10.3390/jcm12134194)")
     st.markdown("""
     **Background:** Each brain hemisphere plays a specialized role in cognitive and behavioral processes, known as hemispheric lateralization. 
     In chronic skin diseases, such as plaque psoriasis (Pso) and atopic dermatitis (AD), the degree of lateralization between the frontal hemispheres 
@@ -146,9 +146,11 @@ if selected == "Inspired From":
 
     st.subheader("Acknowledgment and Note")
     st.warning("""
-    I am not the author of the paper. However, with the help of the authors, I took the data from this original work and trained a machine learning model to classify different groups based on the provided psychophysiological and psychometric data. This platform showcases the potential machine learning application and analysis based on the data from the authors' work.
+    I am not the author of the paper. However, with the help of the authors, I took the data from this **[original](https://doi.org/10.3390/jcm12134194)** work and trained a machine learning model to classify different groups based on the provided psychophysiological and psychometric data. This platform showcases the potential machine learning application and analysis based on the data from the authors' work.
 
-    I would like to especially thank the first author, Szabolcs Bozsányi, and the rest of the research team for sharing the data, which made this platform possible.
+    I would like to especially thank the first author, ***Szabolcs Bozsányi***. Also, ***Prof. Imre Lázár***, he was the author of the previous [article](https://doi.org/10.3390/jcm12134194) and it was actually his courtesy letting us using the data. I would also like thank him espicially for the dataset. Lastly, the rest of the research team for sharing the data, which made this platform possible.
+    
+    Thank you all once again!
     """)
 
 
@@ -161,7 +163,8 @@ def contact_page():
     
     st.subheader("Contact Details", help="Contact developer of this platform.")
     st.write("**Priom Deb**")
-    st.write("**Email:** priom@priomdeb.com")
+    st.write("Computer Science Graduate, BRAC University")
+    st.write("**Email:** priom@priomdeb.com | priom.deb@g.bracu.ac.bd")
     st.write("**Web:** https://priomdeb.com")
     
     st.markdown("""
