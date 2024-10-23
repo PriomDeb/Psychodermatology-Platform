@@ -1,3 +1,4 @@
+import math
 import streamlit as st
 import streamlit_option_menu
 from streamlit_option_menu import option_menu
@@ -148,7 +149,12 @@ def prediction_from_user_data(df, model, keys, random=False):
         groups = {0: "Healthy Control", 1: "Atopic Dermatitis", 2: "Psoriasis"}
         model_predicted_class = predicted_class[0]
         model_predicted_class_name = class_name
-        original_class = int(random_row.group.to_list()[0])
+        original_class = random_row.group.to_list()[0]
+        
+        if not math.isnan(original_class):
+            original_class = int(original_class) 
+        else:
+            original_class = 0
         original_class_name = groups[original_class]
         confidence_level = f"{max(predictions[0]) * 100:.2f}"
         
