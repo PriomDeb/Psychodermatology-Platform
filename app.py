@@ -148,7 +148,7 @@ if selected == "Inspired From":
     st.warning("""
     I am not the author of the paper. However, with the help of the authors, I took the data from this **[original](https://doi.org/10.3390/jcm12134194)** work and trained a machine learning model to classify different groups based on the provided psychophysiological and psychometric data. This platform showcases the potential machine learning application and analysis based on the data from the authors' work.
 
-    I would like to especially thank the first author, ***Szabolcs Bozsányi***. Also, ***Prof. Imre Lázár***, he was the author of the previous [article](https://doi.org/10.3390/jcm12134194) and it was actually his courtesy letting us using the data. I would also like thank him espicially for the dataset. Lastly, the rest of the research team for sharing the data, which made this platform possible.
+    I would like to especially thank the first author, ***Szabolcs Bozsányi***. Also, ***Prof. Imre Lázár***, he was the author of the previous [article](https://doi.org/10.3390/jcm12134194) and it was actually his courtesy letting us using the data. I would also like to thank him espicially for the dataset. Lastly, thank you the rest of the research team for sharing and explaining the data, which made this platform possible.
     
     Thank you all once again!
     """)
