@@ -100,15 +100,6 @@ def basic_dataset_stats():
         st.pyplot(fig)
         
         st.write("""  """)
-        
-        
-        
-        fig, ax = plt.subplots()
-        sns.violinplot(x='group', y='sex', data=df, palette='Set3', ax=ax)
-        ax.set_title("Gender Distribution by Class (Male-1, Female-2)")
-        ax.set_xlabel("Group/Class")
-        ax.set_ylabel("Sex")
-        st.pyplot(fig)
 
         
     
